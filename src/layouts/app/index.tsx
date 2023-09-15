@@ -1,6 +1,14 @@
-export * from "./header"
+// export * from "./header";
 
-export default function ApplicationLayout({ children }) {
+import type { SessionUserType } from "src/types/user"
+export default function ApplicationLayout(
+    {
+        user,
+        children
+    }: {
+        user: SessionUserType,
+        children: React.ReactNode
+    }) {
     return (<>
         {children}
     </>)

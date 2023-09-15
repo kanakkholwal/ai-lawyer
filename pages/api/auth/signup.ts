@@ -2,21 +2,28 @@ import User from 'src/models/user';
 import dbConnect from 'src/lib/dbConnect';
 import jwt from 'jsonwebtoken';
 import handler,{ transport as createTransport } from 'src/lib/handler';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { JwtPayload } from "jsonwebtoken"
 
 import { createRouter } from 'next-connect';
 
-const router = createRouter();
+const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router.post(async (req, res) => {
 
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.body as {
+      name: string,
+      email: string,
+      password: string,
+
+  };
   try {
     await dbConnect();
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Please enter all fields' });
     }
-    const isEmail = (email) => {
+    const isEmail = (email:string) => {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     }
@@ -84,29 +91,29 @@ router.post(async (req, res) => {
     res.status(201).json({ message: 'Created user Successfully, Please verify your Email Now!!!', success: true });
 
   }
-  catch (error) {
-    res.status(500).json({ message: error.message || 'Something went wrong' });
+  catch (error:any) {
+    res.status(500).json({ message: error?.message || 'Something went wrong' });
   }
 
 
 })
 
-export default router.handler(handler);
+export default router.handler(handler());
 
 
 // Your secret key used to sign the token
-const secretKey = process.env.JWT_SECRET;
+const secretKey = process.env.JWT_SECRET as string;
 const expiresInMinutes = 30; // Token will expire after 30 minutes
 
 // Function to generate a token with a specific expiration time
-function generateVerificationToken(data, expiresInMinutes) {
+function generateVerificationToken(data:string | object | Buffer, expiresInMinutes:number):string {
   return jwt.sign(data, secretKey, { expiresIn: `${expiresInMinutes}m` });
 }
 
 
 
 // Function to verify the token and return the data if valid
-function verifyVerificationToken(token) {
+function verifyVerificationToken(token:string) : JwtPayload | string | null{
   try {
     const decoded = jwt.verify(token, secretKey);
     return decoded;

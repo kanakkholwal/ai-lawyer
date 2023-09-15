@@ -1,5 +1,6 @@
 import ApplicationLayout from "src/layouts/app"
 import { GetSessionParams, getSession } from "next-auth/react";
+import type { sessionType } from "src/types/session"
 import type { SessionUserType } from "src/types/user"
 
 export default function Application(

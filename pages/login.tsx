@@ -56,7 +56,6 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
         },
@@ -65,14 +64,14 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         console.log(data);
 
         setIsLoading(true)
-        toast.promise(signInPromise(), {
+        toast.promise(signInPromise(data), {
             loading: 'Logging in...',
             success: "Logged in successfully",
             error: (err) => {
                 return err || "An error occurred while logging in";
             }
         })
-        toast.promise(signInPromise(), {
+        toast.promise(signInPromise(data), {
             loading: 'Logging in...',
             success: (data) => {
                 console.log(data);
@@ -87,22 +86,24 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         })
 
     }
-    const signInPromise = async () => new Promise(async (resolve, reject) => {
+    const signInPromise = async (data:{
+        email:string,
+        password:string
+    }) => new Promise(async (resolve, reject) => {
         try {
             signIn('credentials', {
-                callbackUrl: router.query.continue || "/app",
-                email: enteredEmail,
-                password: enteredPassword,
+                email: data.email,
+                password: data.password,
                 redirect: false
             }).then((data) => {
                 console.log(data);
-                if (data.ok === false) {
+                if (data && data.ok === false) {
                     reject(data.error);
                     return;
                 }
-                else if (data.ok === true) {
+                else if (data && data.ok === true) {
                     resolve(data);
-                    router.push(router.query.continue || "/app");
+                    router.push(("/app"));
                     return;
                 }
                 resolve(data);
@@ -193,7 +194,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Button variant="outline" type="button" disabled={isLoading}
                 onClick={async () => {
                     setIsLoading(true);
-                    await signIn('google', { callbackUrl: router.query.continue || "/app" })
+                    await signIn('google', { callbackUrl: "/app" })
                     setIsLoading(false);
 
                 }}            >

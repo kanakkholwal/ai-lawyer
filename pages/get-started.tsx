@@ -189,7 +189,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <Button variant="outline" type="button" disabled={isLoading}
                   onClick={async() => {
                     setIsLoading(true);
-                    await signIn('google', { callbackUrl: router.query.continue || "/app" })
+                    await signIn('google', { callbackUrl: "/app" })
                     setIsLoading(false);
 
                   }}
