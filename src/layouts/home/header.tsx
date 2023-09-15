@@ -89,6 +89,7 @@ export const Hero = styled.div`
     justify-content: space-around;
     flex-wrap:wrap;
     gap:1rem;
+    overflow:hidden;
     &:before{
         content:"";
         position:absolute;
