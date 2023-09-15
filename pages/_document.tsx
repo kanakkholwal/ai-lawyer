@@ -1,10 +1,9 @@
-
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components';
-
+import { NextPageContext } from 'next';
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: NextPageContext) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
 
@@ -31,12 +30,9 @@ export default class MyDocument extends Document {
   }
 
   render() {
-
-
     return (
       <Html lang='en'>
         <Head>
-          {/* <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" /> */}
           <meta name="description" content="AI Lawyer - Your Law Assistant" />
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
