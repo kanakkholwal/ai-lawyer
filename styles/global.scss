@@ -13,10 +13,10 @@
         --popover: 0 0% 100%;
         --popover-foreground: 222.2 84% 4.9%;
 
-        --primary: 222.2 47.4% 11.2%;
+        --primary: 215.06deg 100% 50%;
         --primary-foreground: 210 40% 98%;
 
-        --secondary: 210 40% 96.1%;
+        --secondary: 216.59deg 33.88% 23.73%;
         --secondary-foreground: 222.2 47.4% 11.2%;
 
         --muted: 210 40% 96.1%;
@@ -83,14 +83,26 @@
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
 }
-
-body {
-    width:100%;
-    height:100%;
-    min-height: 100vh;
-    min-width: 100vw;
+*,*:before,*:after{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0!important;
+
+}
+
+
+body {
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow-x: hidden;
+    width:100%!important;
+    height:100%;
+    
     background: linear-gradient(135deg, rgba(var(--background-start-rgb), 1) 0%, rgba(var(--background-end-rgb), 1) 100%);
     font-size: 16px;
     font-family: 'Inter','Roboto', sans-serif;
@@ -103,7 +115,6 @@ body {
     --theme-rgb:37,99,235;
     --theme: rgba(var(--theme-rgb), var(--theme-opacity));
     --primary-rgb: 0, 150 ,204;
-    --primary: rgba(var(--primary-rgb), var(--theme-opacity));
     --secondary-rgb: 128 ,47 ,222;
     --secondary: rgba(var(--secondary-rgb), var(--theme-opacity));
     --success-rgb:15 ,133 ,100;

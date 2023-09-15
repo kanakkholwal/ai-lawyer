@@ -15,16 +15,19 @@ export function transport() {
 
     return _transport
 }
-function onError(err, req, res, next) {
-    console.error(err);
-    res.status(500).end(err.toString());
-}
 
-const handler = {
-    onError: onError,
+
+const handler = (err, req, res, next) => {
+    
+    return {
+    onError: (err, req, res, next)=>{
+        console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+    },
     onNoMatch: (req, res) => {
         res.status(404).send("Page is not found");
     },
+}
 }
 
 

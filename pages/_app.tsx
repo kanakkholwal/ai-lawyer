@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { SessionProvider } from "next-auth/react"
 import Head from 'next/head';
+import  { Toaster } from 'react-hot-toast';
 
 
 export default function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps & {
@@ -54,5 +55,9 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps },
     <SessionProvider session={session}>
       <Component {...pageProps} />
     </SessionProvider>
+    <Toaster
+  position="top-center"
+  reverseOrder={false}
+  />
   </>
 }

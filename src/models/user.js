@@ -52,24 +52,11 @@ const UserSchema = new mongoose.Schema(
         values: ['user', 'admin'],
       },
     },
-    account_type: {
-      type: String,
-      default: 'free',
-      enum: {
-        values: ['free', 'premium'],
-      },
-    },
     createdAt: {
       type: Date,
       default: Date.now,
     },
-    posts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-        populate: { path: 'analytics' } // Add this line
-      },
-    ],
+
     verificationToken: {
       type: String,
       default: null,
