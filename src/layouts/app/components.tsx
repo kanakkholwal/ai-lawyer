@@ -93,6 +93,9 @@ export const Menubar = styled.div`
     max-width:1600px;
     display: flex;
     align-items: center;
+    flex-wrap:no-wrap;
+    overflow-x:auto;
+    scroll-behaviour: smooth;
     transition: all .25s ease;
     flex-grow: 1;
     flex-shrink: 0;
