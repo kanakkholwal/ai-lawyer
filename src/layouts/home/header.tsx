@@ -9,7 +9,7 @@ export const Header = styled.header`
 
 `;
 export const Nav = styled.nav`
-    width: 100%;
+    width: calc(100% - 1rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,8 +46,7 @@ export const Logo = styled.div`
     margin-right:auto;
     img{
         object-fit: cover;
-        max-height:60px;
-        margin-top:-10px;
+        height:60px;
     }
 `;
 export const Menu = styled.div`
@@ -89,15 +88,19 @@ export const Hero = styled.div`
     justify-content: space-around;
     flex-wrap:wrap;
     gap:1rem;
-    overflow:hidden;
+    overflow-x:hidden!important;
+    position:relative;
     &:before{
         content:"";
         position:absolute;
         inset:0;
         margin:auto;
         margin-right:192px;
-        width:480px;
-        height:480px;
+        width:80%;
+        height:80%;
+        max-width:480px;
+        max-height:480px;
+        aspect-ratio:1;
         border-radius:50%;
         background: rgb(210, 255, 247);
         background: radial-gradient(circle, rgb(255, 213, 233) 0%, rgb(190, 243, 234) 100%);
@@ -112,8 +115,11 @@ export const Hero = styled.div`
         margin:auto;
         margin-left:192px;
         margin-top:40px;
-        width:480px;
-        height:480px;
+        width:80%;
+        height:80%;
+        max-width:480px;
+        max-height:480px;
+        aspect-ratio:1;
         border-radius:50%;
         background: rgb(255, 213, 233);
         background: radial-gradient(circle, rgba(var(--theme-rgb),0.1) 0%, rgb(255, 213, 233) 100%);
@@ -123,6 +129,7 @@ export const Hero = styled.div`
     }
     .content{
         flex: 1 1 30%;
+        padding:1rem;
         
         .heading{
             font-size: 3.3125rem;
@@ -138,14 +145,14 @@ export const Hero = styled.div`
             line-height: 1.75rem;
             font-weight: 400;
             color: rgba(var(--grey-rgb));
-            margin-bottom:1rem;
+            margin-bottom:0.5rem;
         }
         .mini-description{
-            font-size: 1em;
-            line-height: 1.2rem;
+            font-size: 1.125rem;
+            line-height: 1.25rem;
             font-weight: 400;
             color: rgba(var(--grey-rgb));
-            margin-top:2rem;
+            margin-block:0.5rem 2rem;
 
         }
         .action{
@@ -182,12 +189,22 @@ export const Hero = styled.div`
         align-items: center;
         justify-content: center;
         flex: 1 1 auto;
+        padding:1rem;
+
         img{
             object-fit: cover;
             max-width:728px;
             border-radius:1rem;
             width:100%;
             box-shadow: 0px 0px 20px 0px rgba(var(--dark-rgb),0.1);
+        }
+    }
+    @media (width < 1074px) {
+        .content{
+            order: 2;
+        }
+        .image{
+            order: 1;
         }
     }
 `;

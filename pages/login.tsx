@@ -1,3 +1,5 @@
+import { GetSessionParams, getSession } from "next-auth/react";
+import type { sessionType } from "src/types/session"
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
@@ -307,3 +309,23 @@ export default function AuthenticationPage() {
         </>
     )
 }
+
+
+export async function getServerSideProps(context: GetSessionParams | undefined) {
+
+
+    const session = (await getSession(context)) as sessionType | null;
+  
+    if (session)
+        return {
+            redirect: {
+                destination: '/app',
+                permanent: false
+            }
+        }
+  
+  
+    return {
+        props: { },
+    }
+  }

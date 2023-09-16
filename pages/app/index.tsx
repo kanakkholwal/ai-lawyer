@@ -2,6 +2,9 @@ import ApplicationLayout from "src/layouts/app"
 import { GetSessionParams, getSession } from "next-auth/react";
 import type { sessionType } from "src/types/session"
 import type { SessionUserType } from "src/types/user"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { ImSearch } from "react-icons/im"
 
 export default function Application(
     {
@@ -12,7 +15,19 @@ export default function Application(
 ) {
 
     return (<ApplicationLayout user={user}>
-        <h1>Application</h1>
+        <h1 className="text-center text-4xl leading-9 tracking-wider font-semibold my-5 mb-8 ">
+            All Applications
+        </h1>
+        <div className="flex w-full items-center space-x-2 relative">
+            <Input type="search" placeholder="Search Apps..." className="py-5  pl-10 text-lg" />
+            <span className="absolute inset-block-0 left-2 text-[rgba(var(--grey-rgb),1)] outline-none">
+                <ImSearch />
+            </span>
+            <Button type="submit" className="w-[200px]">Search Apps </Button>
+        </div>
+        <div className="flex w-full items-stretch justify-start">
+
+        </div>
     </ApplicationLayout>)
 }
 

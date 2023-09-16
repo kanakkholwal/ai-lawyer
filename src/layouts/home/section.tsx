@@ -19,15 +19,21 @@ margin-inline:auto;
     /* background:#fbfbfb; */
     display:flex;
     align-items:center;
+    justify-content:space-around;
     gap:1rem;
-    img{
+    flex-wrap:wrap;
+    .image{
+        img{
         width:100%;
         height:auto;
         border-radius:20px;
         filter: drop-shadow(0px 0px 5px 20px rgba(var(--grey-rgb), 0.01));
     }
+    }
+
     .text{
         flex:1 1 50%;
+        padding:1rem;
         .description{
             font-size: 1.125rem;
             line-height: 1.75rem;

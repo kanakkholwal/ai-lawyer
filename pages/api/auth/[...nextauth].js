@@ -142,7 +142,12 @@ export const authOptions = {
     callbacks: {
         // We can pass in additional information from the user document MongoDB returns
         // This could be avatars, role, display name, etc...
-        async jwt({ token, user }) {
+        async jwt({ token, user,trigger,session }) {
+            if(trigger === "update")
+            return {
+                ...token,
+                ...session
+            }
             if (user) {
                 token.user = {
                     id: user._id,

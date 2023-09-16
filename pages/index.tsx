@@ -39,6 +39,8 @@ export default function Home() {
             <h1 className="heading">Legal Clarity, Simplified</h1>
             <p className="description">Crafting legal documents made easy, so you can focus on what truly matters.
             </p>
+            <p className="mini-description">Experience the difference with our AI-powered legal assistant. Your path to hassle-free legal documentation begins here.
+            </p>
             <div className="action">
               <Link href="/get-started" className="action-btn">
                 Get Started
@@ -48,8 +50,6 @@ export default function Home() {
               </Link>
 
             </div>
-            <p className="mini-description">Experience the difference with our AI-powered legal assistant. Your path to hassle-free legal documentation begins here.
-            </p>
           </div>
           <div className="image">
             <Image src="/assets/hero-illustration.png" alt="hero" width={500} height={500} />
