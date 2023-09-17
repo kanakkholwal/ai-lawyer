@@ -84,7 +84,7 @@ router.post(async (req, res) => {
         console.log("Mail sent");
         await user.save();
 
-        res.status(201).json({ message: 'Created user Successfully, Please verify your Email Now!!!', success: true });
+        res.status(201).json({ message: 'Please verify your Email Now!!!', success: true });
 
     }
     catch (error: any) {

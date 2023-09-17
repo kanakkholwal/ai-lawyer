@@ -98,11 +98,32 @@ export const Menubar = styled.div`
     flex-shrink: 0;
     padding:8px;
     gap:0.25rem;
+    flex-wrap:no-wrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: transparent;
+    }
 
 `;
 export const MenubarItem = styled.div`
     position: relative;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:0.5rem;
+    flex-shrink: 0;
     padding: 4px 12px;
     border-radius: 4px;
     color: rgba(var(--grey-rgb),1);

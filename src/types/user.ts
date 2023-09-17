@@ -20,6 +20,7 @@ type SessionUserType = {
     role: string;
     profileURL: string;
     account_type?: string;
+    verified: boolean;
 }
 
 export type { UserType, SessionUserType };

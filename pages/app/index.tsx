@@ -23,7 +23,7 @@ export default function Application(
             <span className="absolute inset-block-0 left-2 text-[rgba(var(--grey-rgb),1)] outline-none">
                 <ImSearch />
             </span>
-            <Button type="submit" className="w-[200px]">Search Apps </Button>
+            <Button type="submit" className="w-[200px]">Search Apps  <ImSearch className="ml-2"/> </Button>
         </div>
         <div className="flex w-full items-stretch justify-start">
 
