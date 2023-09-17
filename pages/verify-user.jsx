@@ -58,7 +58,7 @@ export default function VerifyUser() {
 
     return (<div className='flex justify-center items-center flex-col gap-4 w-[100vw] h-[100vh]'>
         
-            <Image src="/loader.gif" alt="logo" width={500} height={500} />
+            <Image src="/loader.gif" alt="logo" width={500} height={500} priority />
             <h4>Verification in progress, Please wait ...</h4>
 
         <p className='text-sm text-[rgba(var(--grey-rgb),1)]'>
