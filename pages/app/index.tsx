@@ -2,10 +2,20 @@ import ApplicationLayout from "src/layouts/app"
 import { GetSessionParams, getSession } from "next-auth/react";
 import type { sessionType } from "src/types/session"
 import type { SessionUserType } from "src/types/user"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ImSearch } from "react-icons/im"
-
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card"
+import Link from "next/link";
+  
 export default function Application(
     {
         user
@@ -25,8 +35,19 @@ export default function Application(
             </span>
             <Button type="submit" className="w-[200px]">Search Apps  <ImSearch className="ml-2"/> </Button>
         </div>
-        <div className="flex w-full items-stretch justify-start">
-
+        <div className="flex w-full items-stretch justify-start mt-5">
+            <Card className="max-w-[500px]">
+                <CardContent className="overflow-hidden rounded-xl pt-4 pb-0">
+                    <Image src="/prototype.png" alt="Prototype" width={400} height={300} className="w-full h-auto max-h-[280px] rounded-xl"/>
+                </CardContent>
+                <CardHeader>
+                    <Link className="text-2xl  leading-none tracking-tight  font-semibold"  href={"/app/prototype"}>Prototype</Link>
+                    <CardDescription className="text-sm">
+                        Get your prototype ready in minutes
+                    </CardDescription>
+                   
+                </CardHeader>
+            </Card>
         </div>
     </ApplicationLayout>)
 }
