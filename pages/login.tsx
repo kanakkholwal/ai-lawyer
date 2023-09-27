@@ -66,13 +66,7 @@ function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         console.log(data);
 
         setIsLoading(true)
-        toast.promise(signInPromise(data), {
-            loading: 'Logging in...',
-            success: "Logged in successfully",
-            error: (err) => {
-                return err || "An error occurred while logging in";
-            }
-        })
+
         toast.promise(signInPromise(data), {
             loading: 'Logging in...',
             success: (data) => {

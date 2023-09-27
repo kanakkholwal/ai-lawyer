@@ -148,9 +148,29 @@ export const Main = styled.main`
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    max-width: calc( 1200px + calc(2 * 24px ));
+    max-width: calc(1200px + calc(2 * 24px ));
+    padding: 24px;
+    height:100%;
+
+`;
+export const AppWrapper = styled.div`
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    /* max-width: calc(1200px + calc(2 * 24px )); */
     padding-inline:24px;
     padding-block: 24px;
     height:100%;
+    
+`;
 
-`
+export const Footer = styled.footer`
+    width: 100%;
+    padding: 1rem 0;
+    background-color:rgba(var(--light-rgb),1);
+    border-top:1px solid rgba(var(--grey-rgb),0.1);
+    display: flex;
+    align-items: center;
+    
+`;
+

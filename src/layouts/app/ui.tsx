@@ -6,7 +6,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { HeaderWrapper, MenuItem, MenuSeperator, MenuLabel, Main, Menubar, MenubarItem } from "./components";
+import { HeaderWrapper, MenuItem, MenuSeperator, MenuLabel, AppWrapper, Menubar, MenubarItem } from "./components";
 import {
     Dialog,
     DialogContent,
@@ -17,7 +17,9 @@ import {
 } from "@/components/ui/dialog"
 
 import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
+import { Button,buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils"
+
 import { AiOutlineUser, AiFillStar,AiOutlineStar } from "react-icons/ai"
 import { FiExternalLink, FiSend } from "react-icons/fi"
 import { LuShieldAlert } from "react-icons/lu"
@@ -50,19 +52,8 @@ const routes = [
         name: "Settings",
         path: "/app/settings",
         icon:<IoSettingsOutline className="h-4 w-4" />
-    },
-    {
-        name: "Add new application",
-        path: "/admin/applications/add",
-        icon:<IoSettingsOutline className="h-4 w-4" />,
-        authority: "admin"
     }
-] as {
-    name: string,
-    path: string,
-    icon?: React.ReactNode,
-    authority?: string
-}[]
+]
 
 
 export default function ApplicationLayout(
@@ -73,8 +64,7 @@ export default function ApplicationLayout(
         user: SessionUserType,
         children: React.ReactNode
     }) {
-
-    console.log(user)
+        // console.log(user)
 
     const sendVerificationMail = async () => {
 
@@ -106,19 +96,15 @@ export default function ApplicationLayout(
                 </Link>
 
                 <Dialog>
-                    <DialogTrigger>
-                        <Button variant="outline" size="sm">
+                    <DialogTrigger className={cn(buttonVariants({ variant:"outline", size:"sm", className:"" }))} >
                             Feedback <FcFeedback size={16} className="ml-2" />
-                        </Button>
                     </DialogTrigger>
                     <FeedBackModal />
 
                 </Dialog>
                 <Popover>
-                    <PopoverTrigger>
-                        <Button variant="outline" size="icon" className="rounded-full">
+                    <PopoverTrigger className={cn(buttonVariants({ variant:"outline", size:"icon", className:"rounded-full" }))}>
                             <AiOutlineUser className="h-4 w-4" />
-                        </Button>
                     </PopoverTrigger>
                     <PopoverContent className="p-0 py-2 mr-5 w-[250px] text-left">
                         <MenuLabel>
@@ -143,9 +129,6 @@ export default function ApplicationLayout(
             </nav>
             <Menubar>
                 {routes.map((item, index) => {
-                    if (item.authority && item.authority !== user.role) {
-                        return null;
-                    }
                     return <MenubarItem key={index} as={Link} href={item.path}>
                         {item.name}
                         {item.icon ? item.icon : null}
@@ -154,7 +137,7 @@ export default function ApplicationLayout(
             </Menubar>
 
         </HeaderWrapper>
-        <Main>
+        <AppWrapper>
             {user.verified === false ? <div className="relative w-full rounded-lg border p-4 bg-background flex items-center justify-between">
                 <div>
                     <h5 className="mb-1 font-medium leading-none tracking-tigh text-[rgba(var(--warning-rgb),1)]">
@@ -176,7 +159,7 @@ export default function ApplicationLayout(
             </div> : null}
 
             {children}
-        </Main>
+        </AppWrapper>
 
 
     </>)
