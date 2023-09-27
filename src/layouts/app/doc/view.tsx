@@ -8,7 +8,7 @@ import { PiShareFatBold } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
-
+import { compiler } from "markdown-to-jsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import toast from "react-hot-toast";
@@ -71,19 +71,19 @@ export default function DocView() {
         updateDocData(newDoc);
     }
 
-    return (<div className="flex flex-col">
+    return (<div className="flex flex-col sticky top-[100px]">
 
         <div className="flex flex-row justify-between items-center mb-3 gap-3 bg-white rounded-md p-3">
             <Input value={docName} onChange={(e) => setDocName(e.target.value)} placeholder="Your Pdf File Name (e.g. : My marriage certificate)" className="font-semibold focus-visible:ring-0 focus-visible:ring-transparent" />
             <div className="flex gap-2">
                 <Button variant="outline" size="icon" className="p-1" onClick={() => {
-                    downloadPdfDocument(doc.title)
+                    downloadPdfDocument(docName)
                 }} type="button" disabled={pdfLoader}>
                     {pdfLoader ? (
                         <AiOutlineLoading className="h-4 w-4 animate-spin" />
                     ) : (
                         <HiOutlinePrinter className="h-4 w-4" />
-                    )}{" "}
+                    )}
                 </Button>
                 <Button variant="outline" size="icon" className="p-1">
                     <PiShareFatBold className="w-4 h-4" />
@@ -105,13 +105,28 @@ export default function DocView() {
                     }}
                     key={index}>
                     {section.content.map((content: ContentType, index: number) => {
-                        return (<p
-                            className={twMerge("text-[16px] mb-[10px] font-normal", ...content.classNames)}
-                            style={content.styles}
-
-                            key={index}>
-                            {content.value.length === 0 ? content.defaultValue : content.value}
-                        </p>)
+                        return (
+                            <p
+                                className={twMerge("text-[16px] mb-[10px] font-normal", ...content.classNames)}
+                                style={content.styles}
+                                key={index}
+                            >
+                                {compiler(content.value.length === 0 ? content.defaultValue.replace(/```[\s\S]*?```/g, '') : content.value.replace(/```[\s\S]*?```/g, ''), {
+                                    overrides: {
+                                        pre: {
+                                            props: {
+                                                className: "text-inherit font-inherit bg-inherit p-0 m-0 break-words",
+                                            }
+                                        },
+                                        code: {
+                                            props: {
+                                                className: "text-inherit font-inherit bg-inherit p-0 m-0 break-words",
+                                            }
+                                        }
+                                    }
+                                })}
+                            </p>
+                        )
                     })}
                 </div>)
             })}
@@ -120,39 +135,9 @@ export default function DocView() {
     </div>)
 }
 
-
-
-
-function Section({ section }: {
-    section: SectionType
-}) {
-    const { docData: doc,
-        updateDocData
-    }: {
-        docData: DocType,
-        updateDocData: (newData: DocType) => void
-    } = useDocContext();
-    const makeSectionEditable = (sectionIndex: number) => {
-        // make it this section editable only 
-        const newDoc = { ...doc };
-        newDoc.sections.forEach((section: SectionType, index: number) => {
-            section.editable = false;
-        })
-        newDoc.sections[sectionIndex].editable = !doc.sections[sectionIndex].editable
-        updateDocData(newDoc);
-    }
-    return (<>
-        {section.content.map((content: ContentType, index: number) => {
-            return (<p
-                className={twMerge(("text-[16px] mb-[10px] font-normal hover:bg-slate-200 cursor-pointer" + (section.editable === true ? " bg-slate-300" : "")), ...content.classNames)}
-                style={content.styles}
-                onClick={() => {
-                    makeSectionEditable(index)
-                }}
-                key={index}>
-                {content.value.length === 0 ? content.defaultValue : content.value}
-            </p>)
-        })}
-    </>)
+const Wrapper = ({ children }: { children: React.ReactNode }) => {
+    return <p className="text-[16px] mb-[10px] font-normal">{children}</p>
 }
+
+
 
