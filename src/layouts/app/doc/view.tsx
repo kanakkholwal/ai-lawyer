@@ -13,6 +13,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import toast from "react-hot-toast";
 import { AiOutlineLoading } from "react-icons/ai";
+import Image from "next/image";
 
 export default function DocView() {
     const { docData: doc, updateDocData }: {
@@ -22,6 +23,7 @@ export default function DocView() {
     const previewRef = useRef<HTMLDivElement>(null);
     const [docName, setDocName] = useState<string>("Document Name");
     const [pdfLoader, setPdfLoader] = useState(false);
+    // const [testImg, setImg] = useState("");
 
     const downloadPdfDocument = (downloadFileName: string) => {
         const input = previewRef.current as HTMLElement;
@@ -31,22 +33,32 @@ export default function DocView() {
         }
         setPdfLoader(true);
         return new Promise((resolve, reject) => {
-            html2canvas(input)
+            html2canvas(input, {
+                useCORS: true,
+                allowTaint: true,
+                scrollY: -window?.scrollY,
+            })
                 .then((canvas) => {
-                    const imgData: string = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF();
-                    pdf.addImage({
-                        imageData: imgData,
-                        format: 'JPEG',
-                        x: 0,
-                        y: 0,
-                        width: input.clientWidth,
-                        height: input.clientHeight,
-                        alias: '',
-                        compression: 'NONE',
-                        rotation: 0,
-                    });
-                    pdf.save(`${downloadFileName}.pdf`);
+                    // setImg(canvas.toDataURL('image/jpeg', 1.0));
+                    const image = canvas.toDataURL('image/jpeg', 1.0);
+                    const pdf = new jsPDF('p', 'px', 'a4', false);
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+
+                    const widthRatio = pageWidth / canvas.width;
+                    const heightRatio = pageHeight / canvas.height;
+                    const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+
+                    const canvasWidth = canvas.width * ratio;
+                    const canvasHeight = canvas.height * ratio;
+
+                    const marginX = (pageWidth - canvasWidth) / 2;
+                    const marginY = (pageHeight - canvasHeight) / 2;
+
+                    pdf.addImage(image, 'JPEG', marginX, marginY, canvasWidth, canvasHeight);
+                    // pdf.output('dataurlnewwindow');
+                    pdf.save(`${downloadFileName}.by_AI-Legal-Assitant.pdf`);
+
                     toast.success("Pdf Downloaded Successfully");
                     resolve(true);
                 }).catch((err) => {
@@ -72,7 +84,7 @@ export default function DocView() {
     }
 
     return (<div className="flex flex-col sticky top-[100px]">
-
+        {/* {testImg && <Image src={testImg} alt="test"  height={600} width={400}/>} */}
         <div className="flex flex-row justify-between items-center mb-3 gap-3 bg-white rounded-md p-3">
             <Input value={docName} onChange={(e) => setDocName(e.target.value)} placeholder="Your Pdf File Name (e.g. : My marriage certificate)" className="font-semibold focus-visible:ring-0 focus-visible:ring-transparent" />
             <div className="flex gap-2">
@@ -90,7 +102,7 @@ export default function DocView() {
                 </Button>
             </div>
         </div>
-        <div className="p-5 bg-white rounded-md shadow-md aspect-[210/297]" id="doc_preview" ref={previewRef}>
+        <div className="p-5 bg-white rounded-md  aspect-[210/297]" id="doc_preview" ref={previewRef}>
             <h1 className="text-center underline text-[24px] mb-[20px] font-semibold">
                 {doc.title}
             </h1>
