@@ -60,11 +60,12 @@ export default function Editor() {
     }
     function CallImprovement(sectionId: number, contentId: number) {
         const docString = CompileDocumentToSTring();
+        const sectionValue = doc.sections[sectionId].content[contentId].value.trim() === "" ? doc.sections[sectionId].content[contentId].defaultValue : doc.sections[sectionId].content[contentId].value;
         return new Promise(async (resolve, reject) => {
             await axios.post("/api/app/improve", {
                 doc: docString,
                 prompt: aiState.value,
-                section: doc.sections[sectionId].content[contentId].value
+                section: sectionValue
             }).then((response) => {
                 console.log(response.data);
                 resolve(response.data);
@@ -224,11 +225,7 @@ export default function Editor() {
                                                     <form
                                                         onSubmit={(event) => {
                                                             event.preventDefault();
-                                                            toast.promise(CallImprovement(index, contentIndex), {
-                                                                loading: "Generating ...",
-                                                                success: "Generated",
-                                                                error: "Error generating content"
-                                                            });
+                                                        
                                                         }}
                                                         className="flex flex-col items-center"
                                                     >
@@ -244,10 +241,22 @@ export default function Editor() {
                                                         />
                                                         <Button className="m-auto"
                                                             disabled={aiState.fetching || aiState.value.trim().length === 0}
+                                                            onClick={(e) =>{
+                                                                setAiState({
+                                                                    ...aiState,
+                                                                    fetching: true
+                                                                })
+                                                            
+                                                                toast.promise(CallImprovement(index, contentIndex), {
+                                                                    loading: "Generating ...",
+                                                                    success: "Generated",
+                                                                    error: "Error generating content"
+                                                                });
+                                                            }}
                                                         >
 
                                                             {aiState.fetching ? (
-                                                                <AiOutlineLoading className="h-4 w-4 animate-spin" />
+                                                                <AiOutlineLoading className="h-4 w-4 mr-2  animate-spin" />
                                                             ) : (<BsStars className="text-inherit mr-2 h-4 w-4 motion-safe:animate-bounce" />
                                                             )}
                                                             {aiState.fetching ? "Generating ..." : " Generate with AI"}

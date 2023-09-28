@@ -29,7 +29,7 @@ export default function Application(
             All Applications
         </h1>
         <div className="flex w-full items-center space-x-2 relative">
-            <Input type="search" placeholder="Search Apps..." className="py-5  pl-10 text-lg" />
+            <Input type="search" placeholder="Search Apps and Templates ..." className="py-5  pl-10 text-lg" />
             <span className="absolute inset-block-0 left-2 text-[rgba(var(--grey-rgb),1)] outline-none">
                 <ImSearch />
             </span>

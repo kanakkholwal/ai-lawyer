@@ -13,7 +13,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import toast from "react-hot-toast";
 import { AiOutlineLoading } from "react-icons/ai";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function DocView() {
     const { docData: doc, updateDocData }: {
@@ -31,6 +31,7 @@ export default function DocView() {
             toast.error("No Preview Found");
             return;
         }
+
         setPdfLoader(true);
         return new Promise((resolve, reject) => {
             html2canvas(input, {
@@ -88,7 +89,21 @@ export default function DocView() {
         <div className="flex flex-row justify-between items-center mb-3 gap-3 bg-white rounded-md p-3">
             <Input value={docName} onChange={(e) => setDocName(e.target.value)} placeholder="Your Pdf File Name (e.g. : My marriage certificate)" className="font-semibold focus-visible:ring-0 focus-visible:ring-transparent" />
             <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="p-1" onClick={() => {
+                <Button variant="outline" size="icon" className="p-1" onClick={async () => {
+
+                    await new Promise((resolve, reject) => {
+                        try {
+                            const newDoc = { ...doc };
+                            newDoc.sections.forEach((section: SectionType, index: number) => {
+                                section.editable = false;
+                            })
+                            updateDocData(newDoc);
+                            resolve(true)
+                        }
+                        catch (e) {
+                            reject(e)
+                        }
+                    })
                     downloadPdfDocument(docName)
                 }} type="button" disabled={pdfLoader}>
                     {pdfLoader ? (
@@ -123,7 +138,7 @@ export default function DocView() {
                                 style={content.styles}
                                 key={index}
                             >
-                                {compiler(content.value.length === 0 ? content.defaultValue.replace(/```[\s\S]*?```/g, '') : content.value.replace(/```[\s\S]*?```/g, ''), {
+                                {compiler(content.value.length === 0 ? content.defaultValue.replace(/```[\s\S]*?```/g, '').trim() : content.value.replace(/```[\s\S]*?```/g, ''), {
                                     overrides: {
                                         pre: {
                                             props: {

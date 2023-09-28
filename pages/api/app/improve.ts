@@ -32,32 +32,42 @@ router.post(async (req, res) => {
             section
         } = req.body;
 
-        const builtPrompt = (`
-        Act as a lawyer and help a me with this legal document.
-        Here is the document I need help with:
-            ${doc}
-        \n
-        Can you improve this section of the document for me?
-        with the following prompt:
+        const builtPrompt = `
+        As a legal expert, please assist me in refining a section of this document. Here is the document in question:
+        ${doc}
+        
+        I need to enhance the following section:
+        ${section}
+        
+        To do this, please provide a concise and precise revision using the following prompt:
         ${prompt}
-        \n
+        `;
 
-        Here is the section I need help with:   
-        ${section}  
-        \n
-        Make it precise and concise. No need to be verbose.Just respond the section content     
-        `);
+        // Ensure that the prompt is a single string without any line breaks or extra spaces
+        // const cleanedPrompt = builtPrompt.replace(/\n/g, '');
 
-        const completion = await openai.completions.create({
-            model: "gpt-3.5-turbo-instruct",
-            prompt: builtPrompt,
+
+        // const completion = await openai.completions.create({
+        //     model: "gpt-3.5-turbo",
+        //     prompt: cleanedPrompt,
+        //     max_tokens: 100,
+        // });
+
+        // console.log(completion);
+        const cleanedPrompt = builtPrompt.replace(/\n/g, '');
+
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "system", content: "You are a helpful assistant." }, { role: "user", content: cleanedPrompt }],
             max_tokens: 100,
         });
 
         console.log(completion);
 
-        const response = completion.choices[0].text;
+        const response = completion.choices[0]?.message.content ?? "No response";
+        console.log(response);
         const usage = completion.usage
+        console.log(usage);
 
 
 
